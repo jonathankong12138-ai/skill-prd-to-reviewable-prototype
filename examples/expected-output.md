@@ -5,8 +5,9 @@ When used on [brief-prd.md](brief-prd.md), the Skill should produce a local `pro
 Expected characteristics:
 
 - A runnable Vite + React + TypeScript + Tailwind CSS app.
-- A mobile-shaped clickable prototype.
-- A Flow overview with concrete static screens, not only text nodes.
+- A responsive clickable prototype for desktop and mobile widths.
+- A Flow overview with concrete static screens, not text-only nodes.
+- User-flow and functional-line perspectives.
 - Page-specific state controls under each Flow screen.
 - Review comments under each Flow screen.
 - Comments can be added, edited, deleted, resolved, and persisted through refresh.
@@ -16,20 +17,20 @@ Expected characteristics:
 
 Example inferred screens:
 
-- Home
-- Create note
-- Safety check
-- Growth result
-- Garden
-- Detail
+- Workspace dashboard
+- Task list
+- New task form
+- Validation feedback
+- Task detail drawer
+- Delete confirmation
 
 Example scoped states:
 
-- Home: default, empty
-- Create note: text, image, sticker, empty, privacy reminder, submit failure, cached
-- Safety check: pass, privacy reminder, quiet save
-- Growth result: seed, sprout, bloom
-- Garden: default, search empty
-- Detail: normal, deleted item placeholder
+- Dashboard: loading, populated, empty
+- Task list: populated, filtered empty, permission denied
+- New task form: default, validation error, saving, saved draft, save failed
+- Attachment area: empty, uploading, failed, uploaded
+- Task detail: view, editing, blocked, done
+- Delete confirmation: confirm, permission denied, deleted
 
 The final prototype should use product-facing language in the app screens and keep implementation notes in review panels or annotations.
