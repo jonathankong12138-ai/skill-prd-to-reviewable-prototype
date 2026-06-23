@@ -1,17 +1,21 @@
 ---
 name: prd-to-reviewable-prototype
-description: Turn a brief or incomplete PRD into a runnable, shareable, reviewable low-fidelity frontend prototype. Use when Codex must infer product goals, ask targeted clarification questions for important PRD gaps, page inventory, flows, page states, edge cases, interaction rules, and acceptance criteria from sparse PRD input, then build or refine a Vite + React + TypeScript + Tailwind CSS + React Flow prototype for design/dev/test review, including clickable app screens, static flow screens, scoped states, persistent comments, delete/edit/resolve review notes, localStorage, JSON export, and browser-only distribution.
+description: Turn an early product idea, brief PRD, or incomplete PRD into a runnable, shareable, reviewable low-fidelity frontend prototype. Use when Codex must assess product-definition maturity, ask targeted clarification questions for important product/PRD gaps, infer product goals, users, MVP scope, page inventory, flows, page states, edge cases, interaction rules, and acceptance criteria from sparse input, then build or refine a Vite + React + TypeScript + Tailwind CSS + React Flow prototype for design/dev/test review, including clickable app screens, static flow screens, scoped states, persistent comments, delete/edit/resolve review notes, localStorage, JSON export, and browser-only distribution.
 ---
 
 # PRD To Reviewable Prototype
 
-Use this skill to convert a short PRD into a practical prototype review artifact. Do not ask the user to write a complete PRD. Instead, assess whether the brief PRD has enough information to produce an industry-credible interaction prototype. Ask focused clarification questions for high-impact gaps, infer the rest, implement a runnable prototype, and make the result easy for design, development, and testing reviewers to inspect.
+Use this skill to convert an early product idea or short PRD into a practical prototype review artifact. Do not ask the user to write a complete PRD. Instead, assess whether the input has enough product definition to produce an industry-credible interaction prototype. Ask focused clarification questions for high-impact gaps, infer the rest, implement a runnable prototype, and make the result easy for product, design, development, and testing reviewers to inspect.
 
 ## Core Workflow
 
 1. Read the provided PRD and any referenced style/product docs. Preserve the PRD as `prototype-review/src/data/prdInput.md`.
-2. Infer and encode a structured spec in `prototype-review/src/data/prototypeSpec.ts`:
+2. Classify product-definition maturity and run the clarification loop if needed.
+3. Infer and encode a structured spec in `prototype-review/src/data/prototypeSpec.ts`:
    - product goal
+   - first target user segment
+   - problem, trigger, or use moment
+   - MVP promise and non-goals
    - target reviewers and only useful user context
    - core scenarios
    - page inventory
@@ -21,16 +25,48 @@ Use this skill to convert a short PRD into a practical prototype review artifact
    - interaction rules
    - acceptance criteria
    - explicit assumptions
-3. Build or update the frontend in `prototype-review/` using Vite, React, TypeScript, Tailwind CSS, and React Flow.
-4. Keep the prototype low-fidelity but usable. Prioritize real interaction, flow clarity, state inspection, annotations, and review operations over final visual polish.
-5. Build and package a browser-only deliverable so reviewers with only a browser can open it.
+4. Build or update the frontend in `prototype-review/` using Vite, React, TypeScript, Tailwind CSS, and React Flow.
+5. Keep the prototype low-fidelity but usable. Prioritize real interaction, flow clarity, state inspection, annotations, and review operations over final visual polish.
+6. Build and package a browser-only deliverable so reviewers with only a browser can open it.
+
+## Product Definition Maturity Check
+
+Before designing screens, classify the input:
+
+- `idea`: a product thought, feature name, or goal, but no clear user, moment, or MVP flow.
+- `definition`: user/problem/value are partly clear, but pages, rules, or branches are missing.
+- `interaction-ready`: main pages, actions, rules, and states are clear enough to prototype.
+
+For `idea` and weak `definition` inputs, ask product-definition questions before generating UI. The first clarification round should usually cover:
+
+1. Who is the first target user, and in what moment would they use this?
+2. What is the single primary outcome the MVP must let them complete?
+3. What should be included in the first version, and what should be explicitly out of scope?
+
+Ask a second short round only if a remaining answer would materially change information architecture, core flow, or data/rule design.
+
+Proceed to prototype when these are clear enough:
+
+- first target user or reviewer-relevant user context
+- trigger/use scenario
+- primary outcome
+- MVP start and end point
+- core object or data being created, changed, reviewed, or consumed
+- must-have actions
+- important constraints, non-goals, or risky rules
+
+If the user does not know an answer, make a conservative assumption and show it in `assumptions`, the rules panel, or review notes.
 
 ## Clarification Loop
 
 Use a lightweight clarification loop when the PRD is incomplete.
 
-Ask questions before building when missing information would materially change the prototype:
+Ask questions before building when missing information would materially change the product definition or prototype:
 
+- first target user segment
+- user problem, trigger, or use moment
+- MVP scope and explicit non-goals
+- success outcome or acceptance signal
 - target medium or device class
 - core user goal or success outcome
 - main entry point and exit path

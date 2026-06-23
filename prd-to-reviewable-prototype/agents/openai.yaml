@@ -1,4 +1,4 @@
 interface:
   display_name: "PRD to Reviewable Prototype"
-  short_description: "Turn brief PRDs into shareable prototype review tools."
-  default_prompt: "Create a browser-shareable, reviewable interactive prototype from this brief PRD; ask targeted questions first if key details are missing."
+  short_description: "Turn early product ideas and PRDs into shareable prototype review tools."
+  default_prompt: "Create a browser-shareable, reviewable interactive prototype from this early product idea or PRD; ask targeted product-definition questions first if key details are missing."

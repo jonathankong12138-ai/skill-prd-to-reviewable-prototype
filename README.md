@@ -1,13 +1,14 @@
 # PRD to Reviewable Prototype Skill
 
-A Codex Skill that turns brief or incomplete PRDs into runnable, browser-shareable interaction prototype review tools.
+A Codex Skill that turns early product ideas, brief PRDs, or incomplete PRDs into runnable, browser-shareable interaction prototype review tools.
 
 It is built for product managers, designers, frontend engineers, QA, and reviewers who need to align on flows, states, interactions, and review comments before full implementation.
 
 ## What It Does
 
 - Reads brief or incomplete PRDs.
-- Asks targeted clarification questions when key details are missing.
+- Assesses product-definition maturity before designing screens.
+- Asks targeted clarification questions when key product or interaction details are missing.
 - Infers product goals, pages, primary flows, branch flows, page states, edge cases, interaction rules, and acceptance criteria.
 - Builds a Vite + React + TypeScript + Tailwind CSS prototype review app.
 - Supports clickable prototype screens, Flow overview, scoped states, review comments, localStorage persistence, delete/edit/resolve actions, and `review-notes.json` export.
@@ -65,6 +66,12 @@ Or:
 ```text
 Here is my brief PRD. Use the PRD to Reviewable Prototype skill. Ask me targeted questions first if key details are missing, then build the prototype.
 ```
+
+For very early ideas, the Skill first asks product-definition questions such as:
+
+- Who is the first target user, and in what moment would they use this?
+- What is the single primary outcome the MVP must let them complete?
+- What should be included in the first version, and what should be out of scope?
 
 ## Example Input
 
