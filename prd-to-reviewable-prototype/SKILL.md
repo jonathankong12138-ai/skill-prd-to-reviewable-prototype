@@ -1,98 +1,64 @@
 ---
 name: prd-to-reviewable-prototype
-description: Turn an early product idea, brief PRD, or incomplete PRD into a runnable, shareable, reviewable low-fidelity frontend prototype. Use when Codex must assess product-definition maturity, ask targeted clarification questions for important product/PRD gaps, infer product goals, users, MVP scope, page inventory, flows, page states, edge cases, interaction rules, and acceptance criteria from sparse input, then build or refine a Vite + React + TypeScript + Tailwind CSS + React Flow prototype for design/dev/test review, including clickable app screens, static flow screens, scoped states, persistent comments, delete/edit/resolve review notes, localStorage, JSON export, and browser-only distribution.
+description: Turn any early product idea, brief PRD, or incomplete PRD into a runnable, shareable, reviewable low-fidelity interactive prototype workbench. Use when Codex must identify medium, product type, core task, product-definition gaps, information architecture, user flows, functional flows, page states, edge cases, medium constraints, interaction rules, acceptance criteria, and build or refine a Vite + React + TypeScript + Tailwind CSS + React Flow prototype for mobile apps, responsive websites, Web apps, admin/SaaS dashboards, H5/mini-programs, desktop apps, plugins/extensions, tools, content products, e-commerce, communities, games, simulations, and data dashboards, with real interactions, comments, localStorage, JSON export, browser-only index.html, and zip packaging.
 ---
 
 # PRD To Reviewable Prototype
 
-Use this skill to convert an early product idea or short PRD into a practical prototype review artifact. Do not ask the user to write a complete PRD. Instead, assess whether the input has enough product definition to produce an industry-credible interaction prototype. Ask focused clarification questions for high-impact gaps, infer the rest, implement a runnable prototype, and make the result easy for product, design, development, and testing reviewers to inspect.
+Use this skill to convert any incomplete PRD or early product idea into a runnable prototype review workbench. The output is not a static page gallery. It must expose information architecture, user flows, functional flows, state feedback, exception paths, medium constraints, review comments, and acceptance criteria.
+
+Do not ask the user to write a complete PRD. Ask up to 3 focused questions only when missing information would materially change the prototype. Infer low-risk gaps and write them in `assumptions`.
 
 ## Core Workflow
 
-1. Read the provided PRD and any referenced style/product docs. Preserve the PRD as `prototype-review/src/data/prdInput.md`.
-2. Classify product-definition maturity and run the clarification loop if needed.
-3. Infer and encode a structured spec in `prototype-review/src/data/prototypeSpec.ts`:
-   - product goal
+1. Read the PRD and any referenced style, product, market, or platform docs. Preserve source text in `prototype-review/src/data/prdInput.md`.
+2. Classify product-definition maturity:
+   - `idea`: feature name or goal only.
+   - `definition`: user/problem/value partly clear, but pages, rules, states, or flow incomplete.
+   - `interaction-ready`: medium, product type, core task, pages, actions, rules, and states are clear enough to prototype.
+3. Identify three foundations before designing screens:
+   - **Medium**: `mobile-app`, `responsive-web`, `desktop-web-app`, `admin-dashboard / SaaS`, `H5 / mini-program`, `desktop-app`, `plugin / extension`, `game / interactive-tool`, or `unknown`.
+   - **Product type**: `landing / marketing`, `content / media`, `e-commerce`, `community / social`, `productivity / tool`, `SaaS / admin / CRM / ops`, `diary / personal-record`, `data-dashboard`, `onboarding / form / application`, `game / simulation`, or `other`.
+   - **Core task**: why the user comes, where they enter, what success means, where failure/cancel goes, which actions are irreversible or risky, and what data must save, recover, or sync.
+4. Ask clarification questions if medium, product type, or core task is missing and would significantly affect the prototype. Ask no more than 3 questions at a time.
+5. Infer the structured spec:
+   - product goal and MVP promise
    - first target user segment
-   - problem, trigger, or use moment
-   - MVP promise and non-goals
-   - target reviewers and only useful user context
-   - core scenarios
-   - page inventory
-   - primary and branch flows
+   - core scenario and use trigger
+   - medium and product type
+   - information architecture
+   - page/screen inventory
+   - user flow and functional flow
+   - primary, branch, cancel, error, retry, and recovery paths
    - page-specific states
-   - exceptional states
-   - interaction rules
+   - permissions, login, identity, data saving, sync, and recovery
+   - high-risk actions and confirmation/undo/recovery strategy
    - acceptance criteria
-   - explicit assumptions
-4. Build or update the frontend in `prototype-review/` using Vite, React, TypeScript, Tailwind CSS, and React Flow.
-5. Keep the prototype low-fidelity but usable. Prioritize real interaction, flow clarity, state inspection, annotations, and review operations over final visual polish.
-6. Build and package a browser-only deliverable so reviewers with only a browser can open it.
+   - assumptions
+6. Build or update `prototype-review/` using Vite, React, TypeScript, Tailwind CSS, and React Flow.
+7. Package a browser-only deliverable: inlined `dist/index.html` plus a zip folder.
 
-## Product Definition Maturity Check
+## Clarification Questions
 
-Before designing screens, classify the input:
-
-- `idea`: a product thought, feature name, or goal, but no clear user, moment, or MVP flow.
-- `definition`: user/problem/value are partly clear, but pages, rules, or branches are missing.
-- `interaction-ready`: main pages, actions, rules, and states are clear enough to prototype.
-
-For `idea` and weak `definition` inputs, ask product-definition questions before generating UI. The first clarification round should usually cover:
+Ask product-definition questions before UI work when the PRD is early:
 
 1. Who is the first target user, and in what moment would they use this?
 2. What is the single primary outcome the MVP must let them complete?
-3. What should be included in the first version, and what should be explicitly out of scope?
+3. What should be included in v1, and what is explicitly out of scope?
 
-Ask a second short round only if a remaining answer would materially change information architecture, core flow, or data/rule design.
+Ask interaction questions when needed:
 
-Proceed to prototype when these are clear enough:
+- What is the target medium or device class?
+- What is the main entry point and exit path?
+- What data must be saved, restored, synced, or exported?
+- Which actions are destructive, irreversible, costly, public, paid, or high risk?
+- Which platform capabilities are required, such as camera, microphone, location, notification, sound, haptics, file system, payment, login, or sharing?
 
-- first target user or reviewer-relevant user context
-- trigger/use scenario
-- primary outcome
-- MVP start and end point
-- core object or data being created, changed, reviewed, or consumed
-- must-have actions
-- important constraints, non-goals, or risky rules
+If the user cannot answer, make conservative assumptions and show them in the rules panel, review notes, and generated spec.
 
-If the user does not know an answer, make a conservative assumption and show it in `assumptions`, the rules panel, or review notes.
+## Required Project Structure
 
-## Clarification Loop
-
-Use a lightweight clarification loop when the PRD is incomplete.
-
-Ask questions before building when missing information would materially change the product definition or prototype:
-
-- first target user segment
-- user problem, trigger, or use moment
-- MVP scope and explicit non-goals
-- success outcome or acceptance signal
-- target medium or device class
-- core user goal or success outcome
-- main entry point and exit path
-- critical pages or screens
-- required actions and irreversible/destructive actions
-- business rules, permissions, validation, or data dependencies
-- platform constraints such as sound, haptics, offline, sharing, payments, privacy, or integrations
-- visual/product language when the PRD refers to an existing app or feature family
-
-Ask no more than 3 questions at a time. Prefer concrete, answerable questions over broad requests like “please complete the PRD.” If the user answers partially, incorporate the answers and ask one more short round only when a remaining gap would cause the prototype to fail review.
-
-Proceed without more questions when the gaps are low-risk. Make reasonable assumptions and list them in the generated spec or PRD/rules panel.
-
-The goal is not to exhaustively specify the product. The goal is to reach enough clarity for a basic industry-standard interaction prototype:
-
-- clear information architecture
-- complete primary flow
-- sensible branch and cancellation paths
-- meaningful page states
-- realistic interactions and feedback
-- inspectable acceptance criteria
-- review comments and exportable notes
-
-## Required Structure
-
-Create or maintain this structure unless the user specifies otherwise:
+Create or maintain:
 
 ```text
 prototype-review/
@@ -121,83 +87,190 @@ prototype-review/
       exportReview.ts
 ```
 
-Use `base: './'` in Vite and an inline build step for portable `dist/index.html` when the user needs to send files to people who only have a browser.
-
 When creating a fresh project, prefer the bundled template:
 
 ```bash
 node path/to/prd-to-reviewable-prototype/scripts/scaffold-prototype.mjs prototype-review
 ```
 
-The script copies `assets/prototype-template/` into the target directory. After copying, replace the placeholder spec, PRD input, screens, states, and copy with the user’s inferred product model.
+Use `base: './'` in Vite and inline CSS/JS into `dist/index.html` for browser-only sharing.
 
-## View Model
+## Medium Rules
 
-Adapt the view model to the review task instead of blindly showing every possible panel.
+Apply medium-specific interaction obligations automatically.
 
-- `Prototype`: show only the app experience and the relevant PRD/rules panel. The prototype itself should feel like the target medium, such as a mobile app inside a phone frame.
-- `Flow`: show concrete static page screens, not text-only nodes. Integrate page states and comments directly into each flow screen. Do not show PRD text inside Flow unless explicitly requested.
-- `States`: include as a separate view only when it adds value. If the user asks to merge states into Flow, do that.
-- `Review`: include as a separate view only when coordinate-level review is needed outside Flow. Otherwise support comments inside Flow screen cards.
+### Mobile App
 
-## Mobile And Medium Fidelity
+- Render inside a phone frame.
+- Secondary and deeper screens must have back navigation.
+- Task pages must have close, cancel, or save-draft exits.
+- Long content must scroll inside the phone frame; do not crop content.
+- Camera, album, microphone, location, notification, sound, haptic, and similar system capabilities must include permission, denied, off, unavailable, or degraded paths.
+- Bottom actions must avoid safe areas.
+- Foreground/background switching, weak network, failure, restore, and retry must be represented.
 
-Match the PRD medium. If the product is mobile:
+### Responsive Website / Web App
 
-- Render app screens in phone frames.
-- Keep the surrounding review tool desktop-friendly for design/dev/test.
-- Avoid stretching phone frames to match neighboring panels; use intrinsic height (`h-fit`, `self-start`, `items-start`) so the device shell does not grow into empty space.
-- Keep app copy and app controls true to the product. Put implementation notes in annotations or spec panels, not inside the app screen.
+- Verify desktop, tablet, and mobile layouts.
+- Navigation, forms, buttons, modals, filters, pagination, empty states, and errors must work responsively.
+- Do not create uncontrolled horizontal scrolling.
+- Include keyboard focus, semantic structure, form labels, inline errors, and accessible names.
+- Login, submit, save, payment, upload, and export tasks need loading, success, error, and retry.
 
-## Flow Requirements
+### Admin / SaaS / Data Dashboard
 
-Flow should help reviewers inspect actual screens and paths.
+- Favor density, scanning, tables/lists, search, filters, bulk actions, detail drawers, permissions, empty states, and errors.
+- Do not make a marketing hero page.
+- Show data loading, no data, filtered empty results, permission denied, save failure, and delete confirmation.
+- High-risk operations require confirmation plus undo, recovery, or audit strategy when appropriate.
 
-- Use concrete static page cards for each main page, ordered by the main user path.
-- Show arrows or transitions between cards.
-- Put state controls under each screen card.
-- Make each state button update that screen’s rendered state.
-- Put comments under the corresponding screen card.
-- Persist comments with `localStorage`.
-- Support add, edit if practical, delete, and resolved/unresolved.
-- If comments are clicked to toggle resolved status, make delete a separate control so reviewers do not accidentally toggle while deleting.
+### H5 / Mini-Program
+
+- Consider short-link entry, share entry, auth dialogs, WeChat/system capabilities, return path, loading failure, and re-entry.
+- Keep pages lightweight and task paths short.
+
+### Desktop App / Tool
+
+- Consider menu, toolbar, shortcuts, panels, canvas/work area, file save, undo/redo, import/export.
+- For canvas/editors, support zoom, drag, select, status feedback, and empty-canvas browsing.
+
+### Plugin / Extension
+
+- Consider host-app context, permission request, install/onboarding, compact popup, options page, unavailable host state, and safe fallback.
+
+### Game / Interactive Tool
+
+- Implement the core mechanic or interaction. Do not build only an explanation page.
+- Include start, in-progress, pause, fail, success, restart, and exit.
+- For established rules, physics, parsing, or AI engines, use a mature library unless the user explicitly asks for a from-scratch implementation.
+
+## Product Type Baselines
+
+All products must check:
+
+- main entry
+- primary flow
+- success loop
+- cancel/back path
+- empty state
+- error state
+- loading state
+- permission/login/identity state
+- data save and recovery
+- high-risk confirmation
+- help, feedback, or next step
+
+Add product-specific baselines:
+
+- **Diary / personal record**: My/settings, subscription or premium plan, privacy lock, sync/backup, import/export, reminders, theme/appearance, sound/haptics switch. Recycle bin/trash belongs to content management unless the PRD says otherwise.
+- **E-commerce**: product list, detail, variant selection, cart, coupon, address, payment, order, after-sales; include out of stock, payment failure, price change, and invalid coupon.
+- **SaaS / admin / CRM / ops**: side navigation, list, detail, create/edit form, filters, bulk actions, permissions, audit/logs; make delete, disable, publish, and similar high-risk actions reviewable.
+- **Content / media / community / social**: feed, detail, comments, publish, report, collect/save, share, follow, notifications; include empty feed, load failure, content violation, and login gate.
+- **Onboarding / form / application**: step-by-step form, validation, save draft, attachment upload, submit confirmation, review status, returned-for-edit path.
+- **Data dashboard**: overview, chart/table states, time range, filters, drilldown, export, no data, delayed data, permission, and data freshness.
+- **Landing / marketing**: only create a landing page when the PRD is truly marketing-focused; still include responsive CTA flow, form/submission state, success/failure, and analytics assumptions.
+- **Game / simulation**: playable core loop, rules, start, pause, fail, success, retry, exit, settings, and score/progress when relevant.
+
+## Flow Views
+
+Flow must include two perspectives when the product has enough scope:
+
+### User Flow View
+
+- Start from the user entry.
+- Show the path the user actually traverses.
+- Every node must be a concrete screen UI, not a text-only node.
+- Every path must include entry, main action, feedback, exception, success, and return/reflow.
+- The main journey must form a closed loop or clear terminal state.
+
+### Functional Line View
+
+- Organize screens by module or functional area.
+- Show internal states and page relationships.
+- Every screen card must have state controls.
+- Comments must bind to the corresponding screen.
+- Comments must support add, edit, delete, resolved/unresolved, and localStorage persistence.
+
+If the user asks to merge or restructure flows, update both perspectives.
+
+## Real Interaction Requirement
+
+Each core function must implement at least one real interaction, such as:
+
+- input
+- search
+- filter
+- state switch
+- toggle
+- upload count
+- play/pause
+- timer
+- drag/zoom
+- save draft
+- submit validation
+- failed retry
+- delete/restore
+- subscription expand/open
+- permission denied/degraded path
+
+If a core page only navigates, continue implementing until it has meaningful interaction.
+
+## Information Architecture Sync
+
+When the user changes structure or ownership, such as “move trash to content management,” “merge these features,” or “where should recording live,” update all related artifacts:
+
+- actual entry button
+- user flow
+- functional flow
+- static Flow screen
+- interactive Prototype screen
+- rules panel
+- review notes or page explanation
+- acceptance criteria
+- assumptions
+
+Do not only update one button or one screen.
+
+## Review Workbench Requirements
+
+- Keep Prototype, Flow, rules, comments, and export in one clear review environment.
+- Flow overview and interactive prototype must be easy to locate.
+- Avoid overlap in large canvases.
+- Canvas drag/zoom must not hijack phone scrolling, form typing, or button clicks.
+- Avoid uncontrolled horizontal scrolling.
+- Long content needs explicit scroll containers.
+- Phone screens, web viewports, dashboard panels, cards, and modals must be fully viewable.
+- Product UI should use product language; review metadata belongs in rules, annotations, or panels.
 
 ## State Generation Rules
 
 Do not force every page to show `default`, `loading`, `empty`, `error`, `success`, and `completed`.
 
-Generate only states that a user or reviewer would reasonably need to see for that page:
+Generate only meaningful states for each page:
 
-- Data fetch/export/save pages may need loading, error, success.
-- Entry or interactive toy pages may need default, new/empty surface, resource error, completed surface.
-- Timer pages may need running, paused, background/return, completed.
-- Settlement pages may only need result and no-data.
-- Record/edit pages may need prefilled, empty text, entry error.
+- data fetch/export/save: loading, error, success
+- entry/editor: default, empty, validation, draft, permission, failed save
+- timer/game: ready, running, paused, failed, success, retry
+- dashboard/list: loading, populated, no data, filtered empty, permission denied, error
+- settlement/payment/order: pending, success, failure, retry, cancel, refund/after-sales when relevant
 
-If a state is not meaningful from the user perspective, omit it or replace it with a concise relevant status.
-
-## Interaction Rules
+## Interaction Annotation Rules
 
 Generate annotations for meaningful actions:
 
 - trigger and source element
 - destination page or state transition
 - visible feedback
-- loading/error/success behavior when applicable
-- sound/haptic/animation behavior only if it exists in the PRD or target platform
+- loading/error/success behavior
+- permission, login, identity, sync, save, or recovery impact
+- sound/haptic/animation behavior only if relevant to the medium or PRD
 - branch and exception behavior
 
-Do not invent UI controls that do not exist in the product. For example, do not add “simulate finish” buttons to a countdown prototype; implement the real countdown behavior or show the static completed state in Flow.
-
-Separate prototype UI from review metadata:
-
-- Product-facing UI should use product language.
-- Review tool panels may use labels such as state, rule, annotation, and acceptance criteria.
-- Implementation-only feedback like sound, vibration, counters, or test notes should not appear in the app screen unless the real product would show it.
+Do not invent fake product controls. For example, do not add “simulate finish” to a timer; implement the timer or expose completed state in Flow.
 
 ## Review Data Contract
 
-For coordinate review or Flow comments, store comments with:
+Store review comments with:
 
 - `id`
 - `pageId` or `screenId`
@@ -208,48 +281,57 @@ For coordinate review or Flow comments, store comments with:
 - `updatedAt`
 - `resolved`
 
-Use localStorage first. Export `review-notes.json` with comments plus enough spec context to act on the feedback. Refresh must preserve comments.
+Use localStorage first. Export `review-notes.json` with comments, spec context, assumptions, and unresolved risks.
+
+## Research And Networking
+
+When the user asks for market analysis, competitor references, latest standards, common industry functions, or help completing settings, membership, privacy, payment, permissions, platform capabilities, or design patterns, browse the web. Prefer official docs, authoritative design guidelines, platform docs, and mainstream product documentation. Convert findings into:
+
+- prototype functions
+- page states
+- rules panel content
+- acceptance criteria
+- assumptions
+
+Include source links in the final answer when web research informed the prototype.
 
 ## Transferable Output
 
-When the user needs to share with people who only have a browser:
+When sharing with reviewers:
 
 1. Build with relative asset paths.
 2. Inline CSS and JS into `dist/index.html`.
-3. Copy `dist/index.html` and a short open-in-browser instruction file into a transfer folder.
+3. Copy `dist/index.html` and a short instruction file into a transfer folder.
 4. Zip the folder.
-5. Tell the user the exact local paths to both `dist/index.html` and the zip.
+5. Provide exact local paths to `dist/index.html` and the zip.
 
-Opening `dist/index.html` directly with a browser must not show a blank page.
+Opening `dist/index.html` directly in a browser must not show a blank page.
 
-## Design Guidance
+## Visual QA
 
-Build the review tool as a quiet workbench, not a marketing page.
+After each build, verify at least:
 
-- Use a compact top navigation.
-- Use clear visual hierarchy for Flow, Prototype, PRD/rules, states, and comments.
-- Keep cards, panels, and buttons dense enough for repeated review.
-- Use low-fidelity app UI, but make the review shell clean and trustworthy.
-- Avoid decorative visuals that distract from flow and state review.
-- For design/dev/test audiences, remove low-value end-user persona text unless it clarifies behavior.
+- build passes
+- page is not blank
+- primary flow is clickable
+- core interactions really work
+- Flow and Prototype areas do not overlap
+- mobile/web/dashboard layouts are not cropped
+- long pages scroll
+- text does not overflow buttons or cards
+- comments can add, edit, delete, resolve/unresolve, and persist
+- export file can be generated
+- packaged `index.html` opens directly in a browser
 
-When a reference doc is provided for product style or language, read it and adapt copy, tone, and interaction labels to match. Prefer gentle, product-appropriate text over raw technical descriptions.
+Use browser automation/screenshots when available. If unavailable, report the limitation and still run build/package checks.
 
-## Verification
+## Final Response
 
-Run:
+Final delivery must include:
 
-```bash
-npm run build
-```
-
-Also verify:
-
-- `dist/index.html` can open from the filesystem.
-- Flow shows concrete screens, not only text.
-- Each state button displays the corresponding screen state.
-- Comments can be added, resolved/unresolved, deleted, and persisted after refresh.
-- The transferable zip contains the latest inlined `index.html`.
-- No product screen contains fake controls or implementation-only labels.
-
-If browser automation is unavailable, report that limitation and still run the build/package checks.
+- runnable prototype path or local URL
+- browser-openable single-file `dist/index.html`
+- zip path
+- key change summary
+- verification result
+- source links if market/platform/design research was used
